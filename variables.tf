@@ -47,16 +47,8 @@ variable "default_role" {
   description = "The name of the IAM role for the data pipeline"
 }
 
-variable "default_role_policy_id" {
-  description = "Policy id to force dependency between DataPipeline and required role"
-}
-
 variable "resource_role" {
   description = "The name of the IAM role for resources created by the data pipeline"
-}
-
-variable "resource_role_policy_id" {
-  description = "Policy id to force dependency between DataPipeline and required role"
 }
 
 variable "data_pipeline_toggle" {
