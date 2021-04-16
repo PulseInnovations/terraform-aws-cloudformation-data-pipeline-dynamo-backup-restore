@@ -97,7 +97,7 @@
                             },
                             {
                                 "Key": "coreInstanceType",
-                                "StringValue": "m4.large"
+                                "StringValue": "${emr_instance_type}"
                             },
                             {
                                 "Key": "onFail",
@@ -109,11 +109,11 @@
                             },
                             {
                                 "Key": "releaseLabel",
-                                "StringValue": "emr-5.9.0"
+                                "StringValue": "emr-6.2.0"
                             },
                             {
                                 "Key": "masterInstanceType",
-                                "StringValue": "m4.large"
+                                "StringValue": "${emr_instance_type}"
                             },
                             {
                                 "Key": "region",
@@ -178,6 +178,10 @@
                             {
                                 "Key": "tableName",
                                 "StringValue": "#{myDDBTableName}"
+                            },
+                            {
+                                "Key": "dataFormat",
+                                "RefValue": "DDBExportFormat"
                             }
                         ],
                         "Id": "DDBSourceTable",
@@ -192,10 +196,24 @@
                             {
                                 "Key": "type",
                                 "StringValue": "S3DataNode"
+                            },
+                            {
+                                "Key": "dataFormat",
+                                "RefValue": "DDBExportFormat"
                             }
                         ],
                         "Id": "S3BackupLocation",
                         "Name": "S3BackupLocation"
+                    },
+                    {
+                        "Id": "DDBExportFormat",
+                        "Name": "DDBExportFormat",
+                        "Fields": [
+                          {
+                            "Key": "type",
+                            "StringValue": "DynamoDBExportDataFormat"
+                          }
+                        ]
                     },
                     {
                         "Fields": [
@@ -216,20 +234,16 @@
                                 "StringValue": "1"
                             },
                             {
-                                "Key": "step",
-                                "StringValue": "s3://dynamodb-emr-#{myDDBRegion}/emr-ddb-storage-handler/2.1.0/emr-ddb-2.1.0.jar,org.apache.hadoop.dynamodb.tools.DynamoDbExport,#{output.directoryPath},#{input.tableName},#{input.readThroughputPercent}"
-                            },
-                            {
                                 "Key": "runsOn",
                                 "RefValue": "EmrClusterForBackup"
                             },
                             {
                                 "Key": "type",
-                                "StringValue": "EmrActivity"
+                                "StringValue": "HiveCopyActivity"
                             },
                             {
                                 "Key": "resizeClusterBeforeRunning",
-                                "StringValue": "false"
+                                "StringValue": "true"
                             }
                         ],
                         "Id": "TableBackupActivity",
