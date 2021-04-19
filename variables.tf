@@ -18,7 +18,7 @@ variable "subnet_id" {
 
 variable "terminate_after" {
   description = "The time after which the cluster should be terminated to prevent it hanging"
-  default = "3 Hours"
+  default = "1 Hours"
 }
 
 variable "s3_bucket" {
@@ -27,7 +27,7 @@ variable "s3_bucket" {
 
 variable "schedule" {
   description = "The schedule at which to run the backup process"
-  default = "3 Hours"
+  default = "24 Hours"
 }
 
 variable "sns_topic_arn" {

@@ -109,7 +109,7 @@
                             },
                             {
                                 "Key": "releaseLabel",
-                                "StringValue": "emr-6.2.0"
+                                "StringValue": "emr-6.1.0"
                             },
                             {
                                 "Key": "masterInstanceType",
@@ -126,6 +126,10 @@
                             {
                                 "Key": "terminateAfter",
                                 "StringValue": "${terminate_after}"
+                            },
+                            {
+                                "Key": "bootstrapAction",
+                                "StringValue": "s3://datapipeline-us-east-1/us-east-1/bootstrap-actions/latest/TaskRunner/copy-jars-to-hadoop-classpath.sh,us-east-1,s3://dynamodb-dpl-us-east-1/emr-ddb-storage-handler/4.14.0/emr-dynamodb-tools-4.14.0-jar-with-dependencies.jar"
                             }
                         ],
                         "Id": "EmrClusterForBackup",
@@ -178,10 +182,6 @@
                             {
                                 "Key": "tableName",
                                 "StringValue": "#{myDDBTableName}"
-                            },
-                            {
-                                "Key": "dataFormat",
-                                "RefValue": "DDBExportFormat"
                             }
                         ],
                         "Id": "DDBSourceTable",
@@ -196,24 +196,10 @@
                             {
                                 "Key": "type",
                                 "StringValue": "S3DataNode"
-                            },
-                            {
-                                "Key": "dataFormat",
-                                "RefValue": "DDBExportFormat"
                             }
                         ],
                         "Id": "S3BackupLocation",
                         "Name": "S3BackupLocation"
-                    },
-                    {
-                        "Id": "DDBExportFormat",
-                        "Name": "DDBExportFormat",
-                        "Fields": [
-                          {
-                            "Key": "type",
-                            "StringValue": "DynamoDBExportDataFormat"
-                          }
-                        ]
                     },
                     {
                         "Fields": [
@@ -234,12 +220,16 @@
                                 "StringValue": "1"
                             },
                             {
+                                "Key": "step",
+                                "StringValue": "s3://dynamodb-dpl-us-east-1/emr-ddb-storage-handler/4.14.0/emr-dynamodb-tools-4.14.0-jar-with-dependencies.jar,org.apache.hadoop.dynamodb.tools.DynamoDBExport,#{output.directoryPath},#{input.tableName},#{input.readThroughputPercent}"
+                            },
+                            {
                                 "Key": "runsOn",
                                 "RefValue": "EmrClusterForBackup"
                             },
                             {
                                 "Key": "type",
-                                "StringValue": "HiveCopyActivity"
+                                "StringValue": "EmrActivity"
                             },
                             {
                                 "Key": "resizeClusterBeforeRunning",
