@@ -1,9 +1,20 @@
-# Roles
+terraform {
+  required_providers {
+    aws = {
+      source  = "hashicorp/aws"
+      version = "~> 3"
+    }
+    template = {
+      source = "hashicorp/template"
+      version = "~> 2"
+    }
+  }
+}
 
 data "aws_caller_identity" "current" {}
 
 resource "aws_iam_role" "data_pipeline_default_resource_role" {
-  name     = "datapipeline-backup-${var.table_name}-resource"
+  name     = "backup-${var.table_name}-ec2"
   assume_role_policy = <<EOF
 {
   "Version": "2012-10-17",
@@ -23,15 +34,13 @@ resource "aws_iam_role_policy_attachment" "data_pipeline_default_resource_role" 
   role       = aws_iam_role.data_pipeline_default_resource_role.name
   policy_arn = "arn:aws:iam::aws:policy/service-role/AmazonEC2RoleforDataPipelineRole"
 }
-
-
 resource "aws_iam_instance_profile" "data_pipeline_default_resource_role" {
-  name = "datapipeline-backup-${var.table_name}-resource"
+  name = "backup-${var.table_name}-ec2"
   role = aws_iam_role.data_pipeline_default_resource_role.name
 }
 
 resource "aws_iam_policy" "data_pipeline_default_role" { 
-  name     = "datapipeline-backup-${var.table_name}"
+  name     = "backup-${var.table_name}"
   policy = <<EOF
 {
     "Version": "2012-10-17",
@@ -47,8 +56,8 @@ resource "aws_iam_policy" "data_pipeline_default_role" {
                 "iam:PassRole"
             ],
             "Resource": [
-                "arn:aws:iam::${data.aws_caller_identity.current.account_id}:role/datapipeline-backup-${var.table_name}",
-                "arn:aws:iam::${data.aws_caller_identity.current.account_id}:role/datapipeline-backup-${var.table_name}-resource"
+                "arn:aws:iam::${data.aws_caller_identity.current.account_id}:role/backup-${var.table_name}",
+                "arn:aws:iam::${data.aws_caller_identity.current.account_id}:role/backup-${var.table_name}-ec2"
             ]
         },
         {
@@ -159,7 +168,7 @@ resource "aws_iam_policy" "data_pipeline_default_role" {
 EOF
 }
 resource "aws_iam_role" "data_pipeline_default_role" {
-  name     = "datapipeline-backup-${var.table_name}"
+  name     = "backup-${var.table_name}"
   assume_role_policy = <<EOF
 {
   "Version": "2012-10-17",
@@ -208,6 +217,6 @@ data "template_file" "data_pipeline_dynamo_backup_template" {
 }
 
 resource "aws_cloudformation_stack" "module_data_pipeline_backup_stack" {
-    name          = "datapipeline-backup-${var.table_name}"
+    name          = "backup-${var.table_name}"
     template_body = data.template_file.data_pipeline_dynamo_backup_template.rendered
 }
