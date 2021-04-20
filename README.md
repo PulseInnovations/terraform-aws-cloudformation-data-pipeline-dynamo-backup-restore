@@ -12,7 +12,7 @@ You must have the aws provider configuration with a region at the bare minimum e
 
 ```
 provider "aws" {
-  region  = var.aws-region
+  region  = "us-east-1"
 }
 ```
 
