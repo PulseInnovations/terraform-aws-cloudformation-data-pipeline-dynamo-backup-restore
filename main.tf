@@ -212,7 +212,9 @@ data "template_file" "data_pipeline_dynamo_backup_template" {
     depends_on = [
       aws_iam_instance_profile.data_pipeline_default_resource_role,
       aws_iam_role_policy_attachment.data_pipeline_default_resource_role,
-      aws_iam_role_policy_attachment.data_pipeline_default_role
+      aws_iam_role.data_pipeline_default_resource_role,
+      aws_iam_role_policy_attachment.data_pipeline_default_role,
+      aws_iam_role.data_pipeline_default_role
     ]
 }
 
