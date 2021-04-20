@@ -8,20 +8,11 @@ Things of note:
 * It does work with On Demand provisioning in which case the read_throughput_ratio variable can be ignored
 * It is up to you to provide the Subnet, S3 bucket and SNS topic used to alerting
 
-You must have the aws and template providers e.g.
+You must have the aws provider configuration with a region at the bare minimum e.g.
 
 ```
-terraform {
-  required_version = ">= 0.14"
-  required_providers {
-    aws = {
-      source  = "hashicorp/aws"
-      version = "~> 3"
-    }
-    template = {
-      source = "hashicorp/template"
-      version = "~> 2"
-    }
-  }
+provider "aws" {
+  region  = var.aws-region
 }
 ```
+
