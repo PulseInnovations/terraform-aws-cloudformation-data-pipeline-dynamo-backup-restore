@@ -85,7 +85,7 @@
                     },
                     {
                         "Id": "myOutputS3Loc",
-                        "StringValue": "${s3_bucket}"
+                        "StringValue": "${s3_path}"
                     }
                 ],
                 "PipelineObjects": [
@@ -129,7 +129,7 @@
                             },
                             {
                                 "Key": "bootstrapAction",
-                                "StringValue": "s3://datapipeline-us-east-1/us-east-1/bootstrap-actions/latest/TaskRunner/copy-jars-to-hadoop-classpath.sh,us-east-1,s3://dynamodb-dpl-us-east-1/emr-ddb-storage-handler/4.14.0/emr-dynamodb-tools-4.14.0-jar-with-dependencies.jar"
+                                "StringValue": "s3://datapipeline-${table_region}/${table_region}/bootstrap-actions/latest/TaskRunner/copy-jars-to-hadoop-classpath.sh,${table_region},s3://dynamodb-dpl-${table_region}/emr-ddb-storage-handler/4.14.0/emr-dynamodb-tools-4.14.0-jar-with-dependencies.jar"
                             }
                         ],
                         "Id": "EmrClusterForBackup",
@@ -151,7 +151,7 @@
                             },
                             {
                                 "Key": "pipelineLogUri",
-                                "StringValue": "${s3_bucket}/logs/"
+                                "StringValue": "${s3_path}/logs/"
                             },
                             {
                                 "Key": "type",
@@ -221,7 +221,7 @@
                             },
                             {
                                 "Key": "step",
-                                "StringValue": "s3://dynamodb-dpl-us-east-1/emr-ddb-storage-handler/4.14.0/emr-dynamodb-tools-4.14.0-jar-with-dependencies.jar,org.apache.hadoop.dynamodb.tools.DynamoDBExport,#{output.directoryPath},#{input.tableName},#{input.readThroughputPercent}"
+                                "StringValue": "s3://dynamodb-dpl-${table_region}/emr-ddb-storage-handler/4.14.0/emr-dynamodb-tools-4.14.0-jar-with-dependencies.jar,org.apache.hadoop.dynamodb.tools.DynamoDBExport,#{output.directoryPath},#{input.tableName},#{input.readThroughputPercent}"
                             },
                             {
                                 "Key": "runsOn",

@@ -183,7 +183,6 @@ resource "aws_iam_role_policy_attachment" "data_pipeline_default_role" {
   policy_arn = aws_iam_policy.data_pipeline_default_role.arn
 }
 
-# CloudFormation stacks for data pipeline
 data "template_file" "data_pipeline_dynamo_backup_template" {
     template = file("${path.module}/datapipeline-backup-dynamo-cf.json")
 
@@ -193,7 +192,7 @@ data "template_file" "data_pipeline_dynamo_backup_template" {
         read_throughput_ratio   = var.read_throughput_ratio
         subnet_id               = var.subnet_id
         terminate_after         = var.terminate_after
-        s3_bucket               = "s3://${var.s3_bucket}"
+        s3_path                 = "s3://${var.s3_bucket}/${var.table_name}"
         schedule_period         = var.schedule
         sns_topic_arn           = var.sns_topic_arn
         default_role            = aws_iam_role.data_pipeline_default_role.name
