@@ -162,6 +162,21 @@ resource "aws_iam_policy" "data_pipeline_default_role" {
             "Resource": [
                 "arn:aws:dynamodb:${var.region}:${data.aws_caller_identity.current.account_id}:${data.aws_caller_identity.current.account_id}:table/${var.table_name}"
             ]
+        },
+        {
+            "Effect": "Allow",
+            "Action": [
+                "iam:CreateServiceLinkedRole",
+                "iam:PutRolePolicy"
+            ],
+            "Resource": "arn:aws:iam::*:role/aws-service-role/elasticmapreduce.amazonaws.com*/AWSServiceRoleForEMRCleanup*",
+            "Condition": {
+                "StringLike": {
+                    "iam:AWSServiceName": [
+                        "elasticmapreduce.amazonaws.com"
+                    ]
+                }
+            }
         }
     ]
 }
